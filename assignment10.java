@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -8,8 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
-
-
 public class assignment10 {
 
 	public static void main(String[] args) throws InterruptedException {
@@ -17,15 +16,18 @@ public class assignment10 {
 		WebDriver driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.get("https://ineuron-courses.vercel.app/login");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
+		// Create a course
 		driver.findElement(By.xpath("//input[@type='email']")).sendKeys("ineuron@ineuron.ai");
 		driver.findElement(By.xpath("//input[@type='password']")).sendKeys("ineuron");
 		driver.findElement(By.xpath("//button[@type='submit']")).click();
-		Actions a = new Actions(driver);
-		Thread.sleep(2000);
-		a.moveToElement(driver.findElement(By.xpath("//span[text()='Manage']"))).perform();
 
-		driver.findElement(By.xpath("//span[text()='Manage Courses']")).click();
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//span[normalize-space()='Manage']")).click();
+		;
+		Actions a = new Actions(driver);
+
 		a.moveToElement(driver.findElement(By.xpath("//div[@class='manage-course']"))).perform();
 		driver.findElement(By.xpath("//div[@class='manage-btns']/button[3]")).click();
 		driver.findElement(By.id("thumbnail")).sendKeys("C:\\Users\\kriti\\OneDrive\\Desktop\\New folder\\test.JPG");
@@ -39,16 +41,12 @@ public class assignment10 {
 		while (!date.getText().equals("August 2023")) {
 			driver.findElement(By.xpath("//button[@aria-label='Next Month']")).click();
 
-			System.out.println(date.getText());
-
 		}
 
 		List<WebElement> list = driver
 				.findElements(By.xpath("//div[@class='react-datepicker__week']//div[@role='option']"));
 
 		for (int i = 0; i < list.size(); i++) {
-
-			System.out.println(list.get(i).getText());
 
 			if (list.get(i).getText().equals("10")) {
 				list.get(i).click();
@@ -62,15 +60,13 @@ public class assignment10 {
 		while (!enddate.getText().equals("November 2023")) {
 			driver.findElement(By.xpath("//button[@aria-label='Next Month']")).click();
 
-			System.out.println(enddate.getText());
-
 		}
 		List<WebElement> list2 = driver
 				.findElements(By.xpath("//div[@class='react-datepicker__week']//div[@role='option']"));
 
 		for (int i = 0; i < list.size(); i++) {
 
-			System.out.println(list2.get(i).getText());
+			// System.out.println(list2.get(i).getText());
 
 			if (list2.get(i).getText().equals("10")) {
 				list2.get(i).click();
@@ -92,25 +88,16 @@ public class assignment10 {
 			}
 
 		}
-		Thread.sleep(3000);
+
 		driver.findElement(By.xpath("//button[@class='action-btn']")).click();
 
+		// validate number of courses after adding course
+		Thread.sleep(3000);
+		List<WebElement> list1 = driver.findElements(By.xpath("//tr/td/input[@type='checkbox']"));
+		Thread.sleep(2000);
+		System.out.println(list1.size()); // validation number of courses
 
-		
-		List<WebElement> courses=   driver.findElements(By.xpath("//div[@class='main-container']//tr//td[2]"));
-		driver.manage().timeouts().implicitlyWait(2000, TimeUnit.SECONDS);
-		
-		System.out.println(courses.size());
-		
-		  for(int i=0;i<courses.size();i++) {
-			  
-			  System.out.println(courses.get(i).getText());
-		  if(courses.get(i).getText().equals("Playwright"))
-		  { System.out.println("its is present"); break; 
-		  } 
-		  }
-		 	
-
+		// Delete the Course
 		Thread.sleep(2000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("scroll(0,800)");
@@ -118,18 +105,11 @@ public class assignment10 {
 		driver.findElement(By.xpath("//td[contains(text(),'Playwright')]//parent::tr/td/input")).click();
 
 		driver.findElement(By.xpath("//td[contains(text(),'Playwright')]//parent::tr/td/button")).click();
+		Thread.sleep(4000);
 
-		
-		  for(int i=0;i<courses.size();i++) {
-			  System.out.println(courses.size());
-		  if(!courses.get(i).getText().equals("Playwright"))  { 
-			
-			  
-			  System.out.println("it is deleted"); 
-			  } 
-		  break;
-		  } 
-		  }
-		 
+		// validation number of courses
+		List<WebElement> list3 = driver.findElements(By.xpath("//tr/td/input[@type='checkbox']"));
+		System.out.println(list3.size()); // validation number of courses
 
 	}
+}
